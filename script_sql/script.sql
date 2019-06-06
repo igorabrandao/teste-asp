@@ -14,7 +14,7 @@ drop table correntista
 --*******************************************************
 
 --criação da tabela movimentacao
-CREATE TABLE movimentacao (
+CREATE TABLE select * from movimentacao (
 	idMovimentacao INTEGER PRIMARY KEY IDENTITY(1,1),
 	idCorrentista INTEGER,
 	TipoMovimentacao CHAR(1) NOT NULL,
