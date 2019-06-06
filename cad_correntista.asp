@@ -24,7 +24,7 @@ if cint(id) = 0 then
 	
 else
 
-	strSQL = "update correntista set Nome = '"&Nome&"', SaldoFinanceiro = '"&saldo&"' where id = " & id
+	strSQL = "update correntista set Nome = '"&Nome&"', SaldoFinanceiro = '"&saldo&"' where idCorrentista = " & id
 	conDB.execute(strSQL)
 
 	response.redirect("index.asp?strStatus=ALT")

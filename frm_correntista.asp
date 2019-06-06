@@ -13,7 +13,7 @@ if (trim(id) = "") or (isnull(id)) then id = 0 end if
 if (cint(id) <> 0) then
 			
 	' Seleciona os dados do evento
-	strSQL = "select idCorrentista, Nome, DataCriacao, SaldoFinanceiro from correntista where id = " & id
+	strSQL = "select idCorrentista, Nome, DataCriacao, SaldoFinanceiro from correntista where idCorrentista = " & id
 	
 	' Executa a string sql.
 	Set ObjRst = conDB.execute(strSQL)
