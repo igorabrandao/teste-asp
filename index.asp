@@ -27,7 +27,7 @@ end select
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tutorial CRUD ASP Clássico</title>
+  <title>Listagem de correntistas</title>
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
@@ -50,7 +50,7 @@ end select
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.asp">CRUD ASP</a>
+        <a class="navbar-brand" href="index.asp">IGOR - TESTE UNP</a>
       </div>
     </div>
   </nav>
@@ -65,7 +65,7 @@ end select
     <% end if %>
 
     <div class="starter-template">
-      <h1>Lista de Usuários</h1>
+      <h1>Lista de Correntistas</h1>
       <p align="left">
         <a href="frm_usuario.asp?id=0" class="btn btn-primary btn-cons" alt="Incluir Cadastro" title="Incluir Cadastro"><i class="glyphicon glyphicon-plus"></i> Adicionar</a>
       </p>
@@ -75,15 +75,15 @@ end select
           <tr>
             <th>#</th>
             <th>Nome</th>
-            <th>E-mail</th>
-            <th>Ação</th>
+            <th>Saldo</th>
+            <th>Adicionado em</th>
           </tr>
         </thead>
         <tbody>
 
           <%
-
-          strSQL = "select * from users order by name asc;"
+		  'Listagem dos correntistas
+          strSQL = "select idCorrentista, Nome, DataCriacao, SaldoFinanceiro from correntista order by Nome asc;"
 
           set ObjRst = conDB.execute(strSQL)
 
@@ -91,13 +91,14 @@ end select
 
             %>
             <tr>
-              <td><%=ObjRst("id")%></td>
-              <td><%=ObjRst("name")%></td>
-              <td><%=ObjRst("email")%></td>
+              <td><%=ObjRst("idCorrentista")%></td>
+              <td><%=ObjRst("Nome")%></td>
+              <td><%=ObjRst("SaldoFinanceiro")%></td>
+			  <td><%=ObjRst("DataCriacao")%></td>
               <td>
-                <a href="frm_usuario.asp?id=<%=ObjRst("id")%>" class="btn btn-success" alt="Editar Cadastro" title="Editar Cadastro"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a href="frm_usuario.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-success" alt="Editar Cadastro" title="Editar Cadastro"><i class="glyphicon glyphicon-pencil"></i></a>
 
-                <a data-href="exc_usuario.asp?id=<%=ObjRst("id")%>" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" alt="Excluir Cadastro" title="Excluir Cadastro"><i class="glyphicon glyphicon-remove"></i></a>
+                <a data-href="exc_usuario.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" alt="Excluir Cadastro" title="Excluir Cadastro"><i class="glyphicon glyphicon-remove"></i></a>
               </td>
             </tr>
             <%
