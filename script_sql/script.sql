@@ -28,16 +28,14 @@ select * from movimentacao
 
 --criação da store procedure _sp_ListaMovimentacao
 GO
-CREATE PROCEDURE _sp_ListaMovimentacao @dataInicial DATETIME, @dataFinal DATETIME,
-@tipoMovimentacao CHAR(1)
+CREATE PROCEDURE _sp_ListaMovimentacao @dataInicial DATETIME, @dataFinal DATETIME
 AS 
 SELECT idMovimentacao, idCorrentista, TipoMovimentacao, Valor, DataCriacao  FROM movimentacao
-WHERE tipoMovimentacao = @tipoMovimentacao
-AND DataCriacao between @dataInicial and @dataFinal
+WHERE DataCriacao between CONVERT(DATETIME, @dataInicial) and CONVERT(DATETIME, @dataFinal)
 GO
 
 --execução da stored procedure
-EXEC _sp_ListaMovimentacao @dataInicial = '', @dataFinal = '', @tipoMovimentacao = 'D'
+EXEC _sp_ListaMovimentacao @dataInicial = '2019-06-06', @dataFinal = '2019-06-07'
 
 --*******************************************************
 

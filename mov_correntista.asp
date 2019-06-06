@@ -23,31 +23,58 @@ end select
 %>
 
 <%
-'Recupera os dados do correntista
+' Recupera os dados do correntista
 idCorrentista = Request.QueryString("id")
+filtrar = false
 
-if (trim(idCorrentista) = "") or (isnull(idCorrentista)) then idCorrentista = 0 end if
+if (trim(idCorrentista) = "") or (isnull(idCorrentista)) then 
+	idCorrentista = 0 
+end if
+
+'Foi utilizado o filtro de movimentações
+if (Request.Form("idCorrentista") <> "") and (Not isnull(Request.Form("idCorrentista"))) then 
+	' Define os valores básicos
+	idCorrentista = Request.Form("idCorrentista")
+	dataInicial = Request.Form("dataInicial")
+	dataFinal = Request.Form("dataFinal")
+	
+	filtrar = true
+end if
 
 ' Consiste o Evento
 if (cint(idCorrentista) <> 0) then
-			
-	' Seleciona os dados do evento
-	strSQL = "select idCorrentista, Nome, DataCriacao, SaldoFinanceiro from correntista where idCorrentista = " & idCorrentista
-	
-	' Executa a string sql.
-	Set ObjRst = conDB.execute(strSQL)
-			
-	' Verifica se não é final de arquivo.	
-	if not ObjRst.EOF then
-				
-		' Carrega as informações do Evento
-		nome = ObjRst("Nome")
-		criadoem = ObjRst("DataCriacao")
-		saldo = ObjRst("SaldoFinanceiro")
+	Response.write(dataFinal)
+	if (filtrar) then
+		'Prepare the stored procedure
+		Set cmd = Server.CreateObject("ADODB.Command")
+		cmd.CommandText = "_sp_ListaMovimentacao"
+		cmd.CommandType = 4  'adCmdStoredProc
 
+		cmd.Parameters("@dataInicial") = dataInicial
+		cmd.Parameters("@dataFinal") = dataFinal
+
+		'Execute the stored procedure
+		'This returns recordset but you dont need it
+		cmd.Execute
+	else
+		' Seleciona os dados do evento
+		strSQL = "select idCorrentista, Nome, DataCriacao, SaldoFinanceiro from correntista where idCorrentista = " & idCorrentista
+		
+		' Executa a string sql.
+		Set ObjRst = conDB.execute(strSQL)
+				
+		' Verifica se não é final de arquivo.	
+		if not ObjRst.EOF then
+					
+			' Carrega as informações do Evento
+			nome = ObjRst("Nome")
+			criadoem = ObjRst("DataCriacao")
+			saldo = ObjRst("SaldoFinanceiro")
+
+		end if
+		
+		set ObjRst = nothing
 	end if
-	
-	set ObjRst = nothing
 	
 end if
 %>
@@ -102,25 +129,33 @@ end if
         <a href="frm_movimentacao.asp?idCorrentista=<%=idCorrentista%>&tipo=C" class="btn btn-success btn-cons" alt="Novo crédito" title="Novo crédito"><i class="glyphicon glyphicon-plus"></i> Novo crédito</a>
 		<a href="frm_movimentacao.asp?idCorrentista=<%=idCorrentista%>&tipo=D" class="btn btn-danger btn-cons" alt="Novo débito" title="Novo débito"><i class="glyphicon glyphicon-minus"></i> Novo débito</a>
       </p>
+	  
+	  <br>
+	  
 	  <p align="right">
-		<strong>Filtrar movimentações: </strong>
-		<input id="dataInicial" name="dataInicial" type="date">
-		<input id="dataFinal" name="dataFinal" type="date">
-		<a href="frm_movimentacao.asp?idCorrentista=<%=idCorrentista%>&tipo=D" class="btn btn-link btn-cons" alt="Filtrar movimentações por período" title="Filtrar movimentações por período"><i class="glyphicon glyphicon-filter"></i> Filrar</a>
+		<form role="form" id="filter-form" name="filter-form" method="post" action="mov_correntista.asp">
+			<strong>Filtrar movimentações: </strong>
+			<input id="dataInicial" name="dataInicial" type="date">
+			até
+			<input id="dataFinal" name="dataFinal" type="date">
+			
+			<input type="hidden" name="idCorrentista" id="idCorrentista" value="<%=idCorrentista%>">
+			<button type="submit" class="btn btn-link btn-cons" alt="Filtrar movimentações por período" 
+				title="Filtrar movimentações por período"><i class="glyphicon glyphicon-filter"></i> Filrar</button>
+				
+			&nbsp;&nbsp;&nbsp;
 		
-		&nbsp;&nbsp;&nbsp;
-		
-		<%
-			if (CLng(saldo) > 0) then
-				%><strong style="color: green;">Saldo atual: R$ <%=FormatNumber(saldo, 2)%></strong><%
-			else
-				%><strong style="color: red;">Saldo atual: R$ <%=FormatNumber(saldo, 2)%></strong><%
-			end if
-		%>
+			<%
+				if (CLng(saldo) > 0) then
+					%><strong style="color: green;">Saldo atual: R$ <%=FormatNumber(saldo, 2)%></strong><%
+				else
+					%><strong style="color: red;">Saldo atual: R$ <%=FormatNumber(saldo, 2)%></strong><%
+				end if
+			%>
+		</form>
+			
       </p>
 	  
-	  
-
       <table class="table table-bordered"> 
         <thead>
           <tr>
@@ -218,12 +253,22 @@ end if
   <script src="js/bootstrap.min.js"></script>
   <script>
     $(function()
-    { 
+    {
       $('#confirm-delete').on('show.bs.modal', function(e) {
         $(this).find('.btn-deletar').attr('href', $(e.relatedTarget).data('href'));
         //$('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-deletar').attr('href') + '</strong>');
       });
     });
+	
+	Date.prototype.toDateInputValue = (function() {
+		var local = new Date(this);
+		local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+		return local.toJSON().slice(0,10);
+	});
+	
+	$(document).ready( function() {
+		$('#dataInicial').val(new Date().toDateInputValue());
+	})
   </script>
 </html>
 <%
