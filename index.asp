@@ -67,7 +67,7 @@ end select
     <div class="starter-template">
       <h1>Lista de Correntistas</h1>
       <p align="left">
-        <a href="frm_usuario.asp?id=0" class="btn btn-primary btn-cons" alt="Incluir Cadastro" title="Incluir Cadastro"><i class="glyphicon glyphicon-plus"></i> Adicionar</a>
+        <a href="frm_correntista.asp?id=0" class="btn btn-primary btn-cons" alt="Incluir Cadastro" title="Incluir Cadastro"><i class="glyphicon glyphicon-plus"></i> Adicionar</a>
       </p>
 
       <table class="table table-bordered"> 
@@ -96,7 +96,7 @@ end select
               <td><%=ObjRst("SaldoFinanceiro")%></td>
 			  <td><%=ObjRst("DataCriacao")%></td>
               <td>
-                <a href="frm_usuario.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-success" alt="Editar Cadastro" title="Editar Cadastro"><i class="glyphicon glyphicon-pencil"></i></a>
+                <a href="frm_correntista.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-success" alt="Editar Cadastro" title="Editar Cadastro"><i class="glyphicon glyphicon-pencil"></i></a>
 
                 <a data-href="exc_usuario.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" alt="Excluir Cadastro" title="Excluir Cadastro"><i class="glyphicon glyphicon-remove"></i></a>
               </td>

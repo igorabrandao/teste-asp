@@ -7,14 +7,16 @@ Session.lcId     = 1033
 <%
 
 id   = Request.Form("id")
-name = replace(trim(request.form("name")),"'","")
-email = replace(trim(request.form("email")),"'","")
+nome = replace(trim(request.form("nome")),"'","")
+saldo = CLng(request.form("saldo"))
+
+response.write(saldo)
 
 if (trim(id) = "") or (isnull(id)) then id = 0 end if
 	
 if cint(id) = 0 then
 	
-	strSQL = "insert into users (name, email) values ('"&name&"','"&email&"');"
+	strSQL = "insert into correntista (Nome, SaldoFinanceiro) values ('"&nome&"','"&saldo&"');"	
 	conDB.execute(strSQL)
 
 	response.redirect("index.asp?strStatus=INC")
@@ -22,7 +24,7 @@ if cint(id) = 0 then
 	
 else
 
-	strSQL = "update users set name = '"&name&"', email = '"&email&"' where id = " & id
+	strSQL = "update correntista set Nome = '"&Nome&"', SaldoFinanceiro = '"&saldo&"' where id = " & id
 	conDB.execute(strSQL)
 
 	response.redirect("index.asp?strStatus=ALT")

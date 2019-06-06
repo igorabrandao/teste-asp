@@ -13,7 +13,7 @@ if (trim(id) = "") or (isnull(id)) then id = 0 end if
 if (cint(id) <> 0) then
 			
 	' Seleciona os dados do evento
-	strSQL = "select * from users where id = " & id
+	strSQL = "select idCorrentista, Nome, DataCriacao, SaldoFinanceiro from correntista where id = " & id
 	
 	' Executa a string sql.
 	Set ObjRst = conDB.execute(strSQL)
@@ -22,8 +22,9 @@ if (cint(id) <> 0) then
 	if not ObjRst.EOF then
 				
 		' Carrega as informações do Evento
-		name = ObjRst("name")
-		email     = ObjRst("email")
+		nome = ObjRst("Nome")
+		criadoem = ObjRst("DataCriacao")
+		saldo = ObjRst("SaldoFinanceiro")
 
 	end if
 	
@@ -38,7 +39,7 @@ end if
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <title>Tutorial CRUD ASP Clássico</title>
+    <title>Novo correntista</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
     	body {
@@ -61,7 +62,7 @@ end if
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.asp">CRUD ASP</a>
+          <a class="navbar-brand" href="index.asp">IGOR - TESTE UNP</a>
         </div>
       </div>
     </nav>
@@ -71,21 +72,21 @@ end if
     	<div class="starter">
     		<div class="row">
     			<div class="col-sm-6">
-		    	    <h1>Formulário de Usuário</h1>
+		    	    <h1>Cadastro de correntista</h1>
 			        <div class="modal-body">
-		    			<form role="form" id="db-form" name="db-form" method="post" action="cad_usuario.asp">
+		    			<form role="form" id="db-form" name="db-form" method="post" action="cad_correntista.asp">
 		    				<div class="form-group-attached">
 		    					<div class="row">
 	    							<div class="form-group">
 	    								<label>Nome</label>
-	    								<input type="text" name="name" id="name" class="form-control" placeholder="Informe o nome" value="<%=name%>" required>
+	    								<input type="text" name="nome" id="nome" class="form-control" placeholder="Informe o nome" value="<%=nome%>" required>
 	    							</div>
 		    						
 		    					</div>			
 		    					<div class="row">
 	    							<div class="form-group">
-	    								<label>Email</label>
-	    								<input type="email" name="email" id="email" class="form-control" placeholder="Informe o e-mail" value="<%=email%>" required>
+	    								<label>Saldo</label>
+	    								<input type="number" step="any" name="saldo" id="saldo" class="form-control" placeholder="Informe o saldo" value="<%=saldo%>" required>
 	    							</div>
 		    						
 		    					</div>
