@@ -9,6 +9,7 @@ CREATE TABLE correntista (
 )
 
 select * from correntista
+drop table correntista
 
 --*******************************************************
 
@@ -23,6 +24,7 @@ CREATE TABLE movimentacao (
 )
 
 select * from movimentacao
+drop table movimentacao
 
 --*******************************************************
 
@@ -36,6 +38,8 @@ GO
 
 --execução da stored procedure
 EXEC _sp_ListaMovimentacao @dataInicial = '2019-06-06', @dataFinal = '2019-06-07'
+
+drop proc _sp_ListaMovimentacao
 
 --*******************************************************
 
