@@ -98,7 +98,7 @@ end select
               <td>
                 <a href="frm_correntista.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-success" alt="Editar Cadastro" title="Editar Cadastro"><i class="glyphicon glyphicon-pencil"></i></a>
 
-                <a data-href="exc_usuario.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" alt="Excluir Cadastro" title="Excluir Cadastro"><i class="glyphicon glyphicon-remove"></i></a>
+                <a data-href="exc_correntista.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" alt="Excluir Cadastro" title="Excluir Cadastro"><i class="glyphicon glyphicon-remove"></i></a>
               </td>
             </tr>
             <%
@@ -126,7 +126,7 @@ end select
           </div>
           <div class="modal-body">
             <!--<p class="debug-url"></p>-->
-            <p>Confirmar a exclusão do usuário?</p>
+            <p>Confirmar a exclusão do correntista?</p>
           </div>                
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
