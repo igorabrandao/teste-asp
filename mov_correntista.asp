@@ -97,13 +97,29 @@ end if
 
     <div class="starter-template">
       <h1>Movimentações de <%=nome%></h1>
+	  
       <p align="left">
         <a href="frm_movimentacao.asp?idCorrentista=<%=idCorrentista%>&tipo=C" class="btn btn-success btn-cons" alt="Novo crédito" title="Novo crédito"><i class="glyphicon glyphicon-plus"></i> Novo crédito</a>
 		<a href="frm_movimentacao.asp?idCorrentista=<%=idCorrentista%>&tipo=D" class="btn btn-danger btn-cons" alt="Novo débito" title="Novo débito"><i class="glyphicon glyphicon-minus"></i> Novo débito</a>
       </p>
 	  <p align="right">
-		<strong>Saldo atual: R$ <%=FormatNumber(saldo, 2)%></strong>
+		<strong>Filtrar movimentações: </strong>
+		<input id="dataInicial" name="dataInicial" type="date">
+		<input id="dataFinal" name="dataFinal" type="date">
+		<a href="frm_movimentacao.asp?idCorrentista=<%=idCorrentista%>&tipo=D" class="btn btn-link btn-cons" alt="Filtrar movimentações por período" title="Filtrar movimentações por período"><i class="glyphicon glyphicon-filter"></i> Filrar</a>
+		
+		&nbsp;&nbsp;&nbsp;
+		
+		<%
+			if (CLng(saldo) > 0) then
+				%><strong style="color: green;">Saldo atual: R$ <%=FormatNumber(saldo, 2)%></strong><%
+			else
+				%><strong style="color: red;">Saldo atual: R$ <%=FormatNumber(saldo, 2)%></strong><%
+			end if
+		%>
       </p>
+	  
+	  
 
       <table class="table table-bordered"> 
         <thead>
