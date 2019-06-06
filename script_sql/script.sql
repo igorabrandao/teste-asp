@@ -14,7 +14,7 @@ select * from correntista
 
 --criação da tabela movimentacao
 CREATE TABLE movimentacao (
-	idMovimentacao INTEGER PRIMARY KEY,
+	idMovimentacao INTEGER PRIMARY KEY IDENTITY(1,1),
 	idCorrentista INTEGER,
 	TipoMovimentacao CHAR(1) NOT NULL,
 	Valor DECIMAL(19, 4),

@@ -98,8 +98,8 @@ end if
     <div class="starter-template">
       <h1>Movimentações de <%=nome%></h1>
       <p align="left">
-        <a href="frm_correntista.asp?id=0" class="btn btn-success btn-cons" alt="Incluir Movimentação" title="Incluir Movimentação"><i class="glyphicon glyphicon-plus"></i>Novo crédito</a>
-		<a href="frm_correntista.asp?id=0" class="btn btn-danger btn-cons" alt="Incluir Movimentação" title="Incluir Movimentação"><i class="glyphicon glyphicon-plus"></i>Novo débito</a>
+        <a href="frm_movimentacao.asp?idCorrentista=<%=idCorrentista%>&tipo=C" class="btn btn-success btn-cons" alt="Novo crédito" title="Novo crédito"><i class="glyphicon glyphicon-plus"></i> Novo crédito</a>
+		<a href="frm_movimentacao.asp?idCorrentista=<%=idCorrentista%>&tipo=D" class="btn btn-danger btn-cons" alt="Novo débito" title="Novo débito"><i class="glyphicon glyphicon-minus"></i> Novo débito</a>
       </p>
 	  <p align="right">
 		<strong>Saldo atual: R$ <%=FormatNumber(saldo, 2)%></strong>
@@ -119,44 +119,60 @@ end if
 			' Consiste o Evento
 			if (cint(idCorrentista) = 0) then
 				%>
-				<tr>
-				  <td>Nenhum movimentação encontrada.</td>
+					<tr><td colspan="4">Nenhum movimentação encontrada.</td></tr>
 				<%
 			else
+			  qtd_mov = 0
+			   
 			  'Listagem das movimentações
 			  strSQL = "select idMovimentacao, idCorrentista, TipoMovimentacao, Valor, DataCriacao from movimentacao where idCorrentista = " & idCorrentista
 
 			  set ObjRst = conDB.execute(strSQL)
 
 			  do while not ObjRst.EOF
+			  
+				color="black"
+				
+				if (ObjRst("TipoMovimentacao") = "C") then
+					color = "green"
+				else
+					color = "red"
+				end if
 
 				%>
-				<tr>
+				<tr style="color: <%=color%>;">
 				  <td><%=ObjRst("idMovimentacao")%></td>
 				  <td><%=ObjRst("TipoMovimentacao")%></td>
 				  <td>R$ <%=FormatNumber(ObjRst("Valor"), 2)%></td>
 				  <td><%=ObjRst("DataCriacao")%></td>
-				  <td>
-					<a href="frm_correntista.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-success" alt="Editar Movimentação" title="Editar Movimentação"><i class="glyphicon glyphicon-pencil"></i></a>
-
-					<a data-href="exc_correntista.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete" alt="Excluir Movimentação" title="Excluir Movimentação"><i class="glyphicon glyphicon-remove"></i></a>
-					
-					<a href="mov_correntista.asp?id=<%=ObjRst("idCorrentista")%>" class="btn btn-warning" alt="Visualizar movimentações" title="Visualizar movimentações"><i class="glyphicon glyphicon-euro"></i></a>
-				  </td>
 				</tr>
 				<%
+				
+				qtd_mov = qtd_mov + 1
 
 				ObjRst.MoveNext()
 
 				loop
 
 				set ObjRst = Nothing
+				
+				if (qtd_mov = 0) then
+					%>
+						<tr><td colspan="4">Nenhum movimentação encontrada.</td></tr>
+					<%
+				end if
 			end if
 
           %>
 
         </tbody>
       </table>
+	  
+		<div class="row">
+			<div class="form-group">
+				<a href="index.asp" class="btn btn-info">Voltar</a>
+			</div>
+		</div>
     </div>
 
     <!-- MODAL Exclusão-->
